@@ -33,18 +33,22 @@ class list_persistentdocument_editablelist extends list_persistentdocument_edita
 			{
 				continue;
 			}
-			
 			$tmp = $this->buildListItem($item);
-			$listOfItems[f_util_StringUtils::strip_accents($tmp->getLabel())] = $tmp;
+			$listOfItems[] = $tmp;
 		}
 		// if  order == 1 make a natural order
 		if($order)
 		{
-			ksort($listOfItems);
+			usort($listOfItems, array($this, "naturalOrder"));
 		}
 
 		// Return the list of list_Item
 		return $listOfItems;
+	}
+	
+	protected function naturalOrder($a, $b)
+	{
+		return strcmp(f_util_StringUtils::strip_accents($a->getLabel()), f_util_StringUtils::strip_accents($b->getLabel()));
 	}
 
 	/**
